@@ -1,0 +1,21 @@
+{
+  "name": "react-rock-paper-scissors-vs-ai",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "react": "^16.2.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.0.17",
+    "react-test-renderer": "^16.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "test:coverage": "npm run test -- --coverage",
+    "eject": "react-scripts eject"
+  }
+}
