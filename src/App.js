@@ -1,15 +1,149 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
+import Carousel from './components/Carousel';
+import { ROCK, PAPER, SCISSORS, AVAILABLE_MOVES } from './constants';
+
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      playerOneMove: '',
+      playerTwoMove: '',
+      errorLog: '',
+      result: '',
+    };
+  }
+
+
+  resetGame() {
+    this.setState({
+      playerOneMove: '',
+      playerTwoMove: '',
+      errorLog: '',
+      result: '',
+    });
+  }
+
+  setMoves(playerOneMove, playerTwoMove = null) {
+    const availableMoves = AVAILABLE_MOVES;
+
+    //If the Player one move is not valid, we show a error message
+    if(!(availableMoves.indexOf(playerOneMove) > -1)) {
+      return this.setState({ errorLog: 'Invalid move' });
+    }
+
+    //If the Player two move is not valid, we show a error message
+    if(playerTwoMove !== null && !(availableMoves.indexOf(playerTwoMove) > -1)) {
+      return this.setState({ errorLog: 'Invalid move' });
+    }
+
+    //In order to not override a function parameter, we create an auxiliary variable
+    let _playerTwoMove = playerTwoMove;
+
+    //If player two move is null, we set it up
+    if(_playerTwoMove === null) {
+      _playerTwoMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+    }
+
+    this.setState(
+      { playerOneMove, playerTwoMove: _playerTwoMove },
+      () => this.setGameResult()
+    );
+  }
+
+  setGameResult() {
+    const { playerOneMove, playerTwoMove } = this.state;
+
+    if(!playerOneMove || !playerTwoMove) {
+      return this.setState({ errorLog: 'Invalid operation!' });
+    }
+
+    //Player one wins?
+    if(
+      (playerOneMove === ROCK && playerTwoMove === SCISSORS) ||
+      (playerOneMove === PAPER && playerTwoMove === ROCK) ||
+      (playerOneMove === SCISSORS && playerTwoMove === PAPER)
+    ) {
+      return this.setState({ result: 'You win!' });
+    }
+
+    //Player one loses?
+    if(
+      (playerOneMove === SCISSORS && playerTwoMove === ROCK) ||
+      (playerOneMove === ROCK && playerTwoMove === PAPER) ||
+      (playerOneMove === PAPER && playerTwoMove === SCISSORS)
+    ) {
+      return this.setState({ result: 'You lose!' });
+    }
+
+    return this.setState({ result: 'Its a draw' });
+  }
+
+  renderResult() {
+    return (
+      <div className="App">
+        <header>
+          <h1 className="App-result-title">{this.state.result}</h1>
+          <h2>
+            <p>You picked <i className={`fa fa-hand-${this.state.playerOneMove}-o large`} /></p>
+            <p>Vs</p>
+            <p>Your opponent picked <i className={`fa fa-hand-${this.state.playerTwoMove}-o large`} /></p>
+          </h2>
+        </header>
+        <button
+          className="restart-btn"
+          onClick={() => this.resetGame()}
+        >
+          Restart Game
+        </button>
+      </div>
+    );
+  }
+
   render() {
+    //Is the game over, if so, show the result and the restart button
+    if(this.state.result) {
+      return this.renderResult();
+    }
+
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Rock, paper, scissors</h1>
+          <h2>vs AI</h2>
         </header>
+        <p className="App-intro">
+          Please choose a move.
+        </p>
+        <div id="player-one-container">
+          <button
+            onClick={() => this.setMoves(ROCK)}
+          >
+            <i className="fa fa-hand-rock-o large"></i>
+          </button>
+          <button
+            onClick={() => this.setMoves(SCISSORS)}
+          >
+            <i className="fa fa-hand-scissors-o large"></i>
+          </button>
+          <button
+            onClick={() => this.setMoves(PAPER)}
+          >
+            <i className="fa fa-hand-paper-o large"></i>
+          </button>
+        </div>
+        <p className="App-error-log">
+          {this.state.errorLog}
+        </p>
+        <p className="App-intro">
+          vs
+        </p>
+
+        <Carousel
+          options={AVAILABLE_MOVES.map((move) => (<i className={`fa fa-hand-${move}-o large`} />))}
+        />
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
