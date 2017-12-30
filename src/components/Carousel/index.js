@@ -1,30 +1,31 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
 
+//  TODO find a real library that doesnt realy on setTimeout....
 class Carousel extends Component {
   constructor(props) {
     super(props);
 
-    const options = props.options;
-
     this.state = {
-      selected: options[Math.floor(Math.random() * options.length)]
+      selected: props.options[Math.floor(Math.random() * props.options.length)],
     };
   }
 
   componentDidMount() {
-    this.setSelectedOption();
+    this.interval = setInterval(this.setSelectedOption.bind(this), 1000);
   }
 
-  componentDidUpdate() {
-    this.setSelectedOption();
+  componentWillUnmount() {
+    clearTimeout(this.interval)
   }
 
   setSelectedOption() {
     const options = this.props.options;
-    setTimeout(
-      () => this.setState({ selected: options[Math.floor(Math.random() * options.length)] })
-    ,400);
+
+    //  flip throw the array with {(new Data).getTime() % 3} will iterate from 0 to 2.
+    const date = new Date();
+    const index = Math.floor(date.getTime() % 3);
+    this.setState({ selected: options[index] });
   }
 
   render() {

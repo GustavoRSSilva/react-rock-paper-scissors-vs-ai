@@ -78,7 +78,7 @@ class App extends Component {
       return this.setState({ result: 'You lose!' });
     }
 
-    return this.setState({ result: 'Its a draw' });
+    return this.setState({ result: 'It\'s a draw' });
   }
 
   renderResult() {
