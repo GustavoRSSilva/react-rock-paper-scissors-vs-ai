@@ -3,6 +3,9 @@
   min-height: 1000px;
 }
 
+.App p {
+  font-size: large;
+}
 
 .App-header {
   background-color: blue;
@@ -17,10 +20,6 @@
 
 .App-result-title {
   font-size: 3em;
-}
-
-.App-intro {
-  font-size: large;
 }
 
 .large{
@@ -46,6 +45,7 @@
   margin: 0 auto;
   width: 40px;
 }
+
 .restart-btn{
   margin: 20px;
   height: 40px;
@@ -53,4 +53,8 @@
 
 .restart-btn:hover {
   cursor: pointer;
+}
+
+.app-footer {
+  margin-top: 40px;
 }

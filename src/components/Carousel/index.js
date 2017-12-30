@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
 
-//  TODO find a real library that doesnt realy on setTimeout....
+//  TODO find a real library that doesnt relay on setInterval....
 class Carousel extends Component {
   constructor(props) {
     super(props);

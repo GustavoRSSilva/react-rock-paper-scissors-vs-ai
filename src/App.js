@@ -9,20 +9,20 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      playerOneMove: '',
-      playerTwoMove: '',
-      errorLog: '',
-      result: '',
+      playerOneMove: null,
+      playerTwoMove: null,
+      errorLog: null,
+      result: null,
     };
   }
 
 
   resetGame() {
     this.setState({
-      playerOneMove: '',
-      playerTwoMove: '',
-      errorLog: '',
-      result: '',
+      playerOneMove: null,
+      playerTwoMove: null,
+      errorLog: null,
+      result: null,
     });
   }
 
@@ -103,7 +103,7 @@ class App extends Component {
   }
 
   render() {
-    //Is the game over, if so, show the result and the restart button
+    // If the game over show the result and the restart button
     if(this.state.result) {
       return this.renderResult();
     }
@@ -114,38 +114,40 @@ class App extends Component {
           <h1 className="App-title">Rock, paper, scissors</h1>
           <h2>vs AI</h2>
         </header>
-        <p className="App-intro">
+        <p>
           Please choose a move.
         </p>
         <div id="player-one-container">
           <button
+            className="rock-btn yoo"
             onClick={() => this.setMoves(ROCK)}
           >
             <i className="fa fa-hand-rock-o large"></i>
           </button>
           <button
+            className="scissors-btn"
             onClick={() => this.setMoves(SCISSORS)}
           >
             <i className="fa fa-hand-scissors-o large"></i>
           </button>
           <button
+            className="paper-btn"
             onClick={() => this.setMoves(PAPER)}
           >
             <i className="fa fa-hand-paper-o large"></i>
           </button>
         </div>
-        <p className="App-error-log">
-          {this.state.errorLog}
-        </p>
-        <p className="App-intro">
+        <p>
           vs
         </p>
-
         <Carousel
           options={AVAILABLE_MOVES.map((move) => (<i className={`fa fa-hand-${move}-o large`} />))}
         />
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+        <p className="App-error-log">
+          {this.state.errorLog}
+        </p>
+        <p className="app-footer">
+          For more information about the project, see the <a href="" target="_blank">blog post</a>.
         </p>
       </div>
     );
