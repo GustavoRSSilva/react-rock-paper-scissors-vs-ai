@@ -1,4 +1,4 @@
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-Below you will find some information on how to perform common tasks.<br>
-You can find the most recent version of this guide
+The project is React APP, A Rock, paper scissors game.
+The tests are done with Jest and Enzyme.
