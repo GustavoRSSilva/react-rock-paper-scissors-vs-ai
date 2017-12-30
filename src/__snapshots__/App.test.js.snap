@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App /> The Player picks paper, set the player move to paper 1`] = `
+<button
+  className="paper-btn"
+  onClick={[Function]}
+>
+  <i
+    className="fa fa-hand-paper-o large"
+  />
+</button>
+`;
+
+exports[`<App /> The Player picks rock, set the player move to rock 1`] = `
+<button
+  className="rock-btn yoo"
+  onClick={[Function]}
+>
+  <i
+    className="fa fa-hand-rock-o large"
+  />
+</button>
+`;
+
+exports[`<App /> The Player picks scissors, set the player move to scissors 1`] = `
+<button
+  className="scissors-btn"
+  onClick={[Function]}
+>
+  <i
+    className="fa fa-hand-scissors-o large"
+  />
+</button>
+`;
