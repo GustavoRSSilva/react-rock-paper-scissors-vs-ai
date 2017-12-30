@@ -11,6 +11,16 @@ describe('<App />', () => {
     expect(component).toHaveLength(1);
   })
 
+  it('It renders the state correctly', () => {
+    const component = mount(<App />);
+    expect(component.state()).toEqual({
+      playerOneMove: null,
+      playerTwoMove: null,
+      errorLog: null,
+      result: null,
+    });
+  })
+
   it('The Player picks rock, set the player move to rock', () => {
     const component = mount(<App />);
     const rockButton = component.find('button.rock-btn');
@@ -38,18 +48,21 @@ describe('<App />', () => {
     expect(component.state().playerOneMove).toBe('scissors');
   })
 
-  it('After the player one selects a move, the Ai picks a move', () => {
+  it('The Ai picks a valid move after the player', () => {
     const component = mount(<App />);
+    const availableMoves = ['rock', 'paper', 'scissors'];
+
     const scissorsButton = component.find('button.rock-btn');
     scissorsButton.simulate('click');
-    expect(component.state().playerTwoMove).toBeTruthy();
+
+    expect(availableMoves).toContain(component.state().playerTwoMove);
   })
 
-  it('After the player one selects a move, the Ai picks a move and the game resolves', () => {
+  it('The game ends and show the result after both players set the moves', () => {
     const component = mount(<App />);
     const scissorsButton = component.find('button.rock-btn');
     scissorsButton.simulate('click');
-    expect(component.state().playerTwoMove).toBeTruthy();
+
     expect(component.state().result).toBeTruthy();
   })
 })
