@@ -11,16 +11,6 @@ describe('<App />', () => {
     expect(component).toHaveLength(1);
   })
 
-  it('It renders the state correctly', () => {
-    const component = mount(<App />);
-    expect(component.state()).toEqual({
-      playerOneMove: null,
-      playerTwoMove: null,
-      errorLog: null,
-      result: null,
-    });
-  })
-
   it('The Player picks rock, set the player move to rock', () => {
     const component = mount(<App />);
     const rockButton = component.find('button.rock-btn');
