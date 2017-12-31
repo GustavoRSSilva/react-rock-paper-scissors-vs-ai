@@ -35,14 +35,18 @@ class App extends Component {
     });
   }
 
+  validMove(target) {
+    return target && moves[target];
+  }
+
   setMoves(playerOneMove, playerTwoMove = null) {
     //If the Player one move is not valid, we show a error message
-    if(!moves[playerOneMove]) {
+    if(!this.validMove(playerOneMove)) {
       return this.setState({ errorLog: 'Invalid move' });
     }
 
     //If the Player two move is not valid, we show a error message
-    if(playerTwoMove !== null && !moves[playerTwoMove]) {
+    if(playerTwoMove !== null && !this.validMove(playerTwoMove)) {
       return this.setState({ errorLog: 'Invalid move' });
     }
 
@@ -64,25 +68,20 @@ class App extends Component {
   setGameResult() {
     const { playerOneMove, playerTwoMove } = this.state;
 
-    if(!playerOneMove || !playerTwoMove) {
+    if(!this.validMove(playerOneMove) || !this.validMove(playerTwoMove)) {
       return this.setState({ errorLog: 'Invalid operation!' });
     }
 
-    //Player one wins?
-    if(moves[playerOneMove].beats === playerTwoMove) {
-      return this.setState({ result: 'You win!' });
-    }
+    switch (playerOneMove) {
+      case playerTwoMove:
+        return this.setState({ result: 'It\'s a draw' });
 
-    //Player one loses?
-    if(moves[playerTwoMove].beats === playerOneMove) {
-      return this.setState({ result: 'You lose!' });
-    }
+      case moves[playerTwoMove].beats:
+        return this.setState({ result: 'You lose!' });
 
-    if (playerOneMove === playerTwoMove) {
-      return this.setState({ result: 'It\'s a draw' });
+      default:
+        return this.setState({ result: 'You win!' });
     }
-
-    return this.setState({ errorLog: 'Invalid operation!' });
   }
 
   renderResult() {
@@ -151,7 +150,7 @@ class App extends Component {
           {this.state.errorLog}
         </p>
         <p className="app-footer">
-          For more information about the project, see the <a href="" target="_blank">blog post</a>.
+          For more information about the project, see the <a href="https://gustavorsilva.github.io/blog/react-rock-paper-scissors/" target="_blank">blog post</a>.
         </p>
       </div>
     );
