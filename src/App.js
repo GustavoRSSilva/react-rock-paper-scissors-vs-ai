@@ -2,8 +2,18 @@ import React, { Component } from 'react';
 import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 import Carousel from './components/Carousel';
-import { ROCK, PAPER, SCISSORS, AVAILABLE_MOVES } from './constants';
 
+const moves = {
+  rock: {
+    beats: 'scissors',
+  },
+  scissors: {
+    beats: 'paper',
+  },
+  paper: {
+    beats: 'rock',
+  }
+}
 
 class App extends Component {
   constructor(props) {
@@ -16,7 +26,6 @@ class App extends Component {
     };
   }
 
-
   resetGame() {
     this.setState({
       playerOneMove: null,
@@ -27,20 +36,19 @@ class App extends Component {
   }
 
   setMoves(playerOneMove, playerTwoMove = null) {
-    const availableMoves = AVAILABLE_MOVES;
-
     //If the Player one move is not valid, we show a error message
-    if(!(availableMoves.indexOf(playerOneMove) > -1)) {
+    if(!moves[playerOneMove]) {
       return this.setState({ errorLog: 'Invalid move' });
     }
 
     //If the Player two move is not valid, we show a error message
-    if(playerTwoMove !== null && !(availableMoves.indexOf(playerTwoMove) > -1)) {
+    if(playerTwoMove !== null && !moves[playerTwoMove]) {
       return this.setState({ errorLog: 'Invalid move' });
     }
 
     //In order to not override a function parameter, we create an auxiliary variable
     let _playerTwoMove = playerTwoMove;
+    const availableMoves = Object.keys(moves);
 
     //If player two move is null, we set it up
     if(_playerTwoMove === null) {
@@ -61,24 +69,20 @@ class App extends Component {
     }
 
     //Player one wins?
-    if(
-      (playerOneMove === ROCK && playerTwoMove === SCISSORS) ||
-      (playerOneMove === PAPER && playerTwoMove === ROCK) ||
-      (playerOneMove === SCISSORS && playerTwoMove === PAPER)
-    ) {
+    if(moves[playerOneMove].beats === playerTwoMove) {
       return this.setState({ result: 'You win!' });
     }
 
     //Player one loses?
-    if(
-      (playerOneMove === SCISSORS && playerTwoMove === ROCK) ||
-      (playerOneMove === ROCK && playerTwoMove === PAPER) ||
-      (playerOneMove === PAPER && playerTwoMove === SCISSORS)
-    ) {
+    if(moves[playerTwoMove].beats === playerOneMove) {
       return this.setState({ result: 'You lose!' });
     }
 
-    return this.setState({ result: 'It\'s a draw' });
+    if (playerOneMove === playerTwoMove) {
+      return this.setState({ result: 'It\'s a draw' });
+    }
+
+    return this.setState({ errorLog: 'Invalid operation!' });
   }
 
   renderResult() {
@@ -120,19 +124,19 @@ class App extends Component {
         <div id="player-one-container">
           <button
             className="rock-btn yoo"
-            onClick={() => this.setMoves(ROCK)}
+            onClick={() => this.setMoves('rock')}
           >
             <i className="fa fa-hand-rock-o large"></i>
           </button>
           <button
             className="scissors-btn"
-            onClick={() => this.setMoves(SCISSORS)}
+            onClick={() => this.setMoves('scissors')}
           >
             <i className="fa fa-hand-scissors-o large"></i>
           </button>
           <button
             className="paper-btn"
-            onClick={() => this.setMoves(PAPER)}
+            onClick={() => this.setMoves('paper')}
           >
             <i className="fa fa-hand-paper-o large"></i>
           </button>
@@ -141,7 +145,7 @@ class App extends Component {
           vs
         </p>
         <Carousel
-          options={AVAILABLE_MOVES.map((move) => (<i className={`fa fa-hand-${move}-o large`} />))}
+          options={Object.keys(moves).map((move) => (<i className={`fa fa-hand-${move}-o large`} />))}
         />
         <p className="App-error-log">
           {this.state.errorLog}
