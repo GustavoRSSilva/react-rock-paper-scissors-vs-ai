@@ -2,8 +2,18 @@ import React, { Component } from 'react';
 import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 import Carousel from './components/Carousel';
-import { ROCK, PAPER, SCISSORS, AVAILABLE_MOVES } from './constants';
 
+const moves = {
+  rock: {
+    beats: 'scissors',
+  },
+  scissors: {
+    beats: 'paper',
+  },
+  paper: {
+    beats: 'rock',
+  }
+}
 
 class App extends Component {
   constructor(props) {
@@ -16,7 +26,6 @@ class App extends Component {
     };
   }
 
-
   resetGame() {
     this.setState({
       playerOneMove: null,
@@ -26,21 +35,24 @@ class App extends Component {
     });
   }
 
-  setMoves(playerOneMove, playerTwoMove = null) {
-    const availableMoves = AVAILABLE_MOVES;
+  validMove(target) {
+    return target && moves[target];
+  }
 
+  setMoves(playerOneMove, playerTwoMove = null) {
     //If the Player one move is not valid, we show a error message
-    if(!(availableMoves.indexOf(playerOneMove) > -1)) {
+    if(!this.validMove(playerOneMove)) {
       return this.setState({ errorLog: 'Invalid move' });
     }
 
     //If the Player two move is not valid, we show a error message
-    if(playerTwoMove !== null && !(availableMoves.indexOf(playerTwoMove) > -1)) {
+    if(playerTwoMove !== null && !this.validMove(playerTwoMove)) {
       return this.setState({ errorLog: 'Invalid move' });
     }
 
     //In order to not override a function parameter, we create an auxiliary variable
     let _playerTwoMove = playerTwoMove;
+    const availableMoves = Object.keys(moves);
 
     //If player two move is null, we set it up
     if(_playerTwoMove === null) {
@@ -56,29 +68,20 @@ class App extends Component {
   setGameResult() {
     const { playerOneMove, playerTwoMove } = this.state;
 
-    if(!playerOneMove || !playerTwoMove) {
+    if(!this.validMove(playerOneMove) || !this.validMove(playerTwoMove)) {
       return this.setState({ errorLog: 'Invalid operation!' });
     }
 
-    //Player one wins?
-    if(
-      (playerOneMove === ROCK && playerTwoMove === SCISSORS) ||
-      (playerOneMove === PAPER && playerTwoMove === ROCK) ||
-      (playerOneMove === SCISSORS && playerTwoMove === PAPER)
-    ) {
-      return this.setState({ result: 'You win!' });
-    }
+    switch (playerOneMove) {
+      case playerTwoMove:
+        return this.setState({ result: 'It\'s a draw' });
 
-    //Player one loses?
-    if(
-      (playerOneMove === SCISSORS && playerTwoMove === ROCK) ||
-      (playerOneMove === ROCK && playerTwoMove === PAPER) ||
-      (playerOneMove === PAPER && playerTwoMove === SCISSORS)
-    ) {
-      return this.setState({ result: 'You lose!' });
-    }
+      case moves[playerTwoMove].beats:
+        return this.setState({ result: 'You lose!' });
 
-    return this.setState({ result: 'It\'s a draw' });
+      default:
+        return this.setState({ result: 'You win!' });
+    }
   }
 
   renderResult() {
@@ -120,19 +123,19 @@ class App extends Component {
         <div id="player-one-container">
           <button
             className="rock-btn yoo"
-            onClick={() => this.setMoves(ROCK)}
+            onClick={() => this.setMoves('rock')}
           >
             <i className="fa fa-hand-rock-o large"></i>
           </button>
           <button
             className="scissors-btn"
-            onClick={() => this.setMoves(SCISSORS)}
+            onClick={() => this.setMoves('scissors')}
           >
             <i className="fa fa-hand-scissors-o large"></i>
           </button>
           <button
             className="paper-btn"
-            onClick={() => this.setMoves(PAPER)}
+            onClick={() => this.setMoves('paper')}
           >
             <i className="fa fa-hand-paper-o large"></i>
           </button>
@@ -141,13 +144,13 @@ class App extends Component {
           vs
         </p>
         <Carousel
-          options={AVAILABLE_MOVES.map((move) => (<i className={`fa fa-hand-${move}-o large`} />))}
+          options={Object.keys(moves).map((move) => (<i className={`fa fa-hand-${move}-o large`} />))}
         />
         <p className="App-error-log">
           {this.state.errorLog}
         </p>
         <p className="app-footer">
-          For more information about the project, see the <a href="" target="_blank">blog post</a>.
+          For more information about the project, see the <a href="https://gustavorsilva.github.io/blog/react-rock-paper-scissors/" target="_blank">blog post</a>.
         </p>
       </div>
     );

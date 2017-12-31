@@ -52,7 +52,6 @@ describe('<App />', () => {
     const component = mount(<App />);
     const scissorsButton = component.find('button.rock-btn');
     scissorsButton.simulate('click');
-
     expect(component.state().result).toBeTruthy();
   })
 })
