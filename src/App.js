@@ -63,7 +63,7 @@ class App extends Component {
     }
 
     if (playerOneMove === playerTwoMove) {
-      return this.setState({ result: 'You win!' });
+      return this.setState({ result: 'It\'s a draw' });
     }
 
     return ( moves[moves.indexOf(playerOneMove) + 1] || moves[0]) ===  playerTwoMove ? this.setState({ result: 'You win!' }) : this.setState({ result: 'You lose!' });
@@ -129,13 +129,13 @@ class App extends Component {
           vs
         </p>
         <Carousel
-          options={Object.keys(moves).map((move) => (<i className={`fa fa-hand-${move}-o large`} />))}
+          options={moves.map((move) => (<i className={`fa fa-hand-${move}-o large`} />))}
         />
         <p className="App-error-log">
           {this.state.errorLog}
         </p>
         <p className="app-footer">
-          For more information about the project, see the <a href="https://gustavorsilva.github.io/blog/react-rock-paper-scissors/" target="_blank">blog post</a>.
+          For more information about the project, see the <a href="http://www.gustavorssilva.com/blog/react-rock-paper-scissors/" target="_blank">blog post</a>.
         </p>
       </div>
     );
