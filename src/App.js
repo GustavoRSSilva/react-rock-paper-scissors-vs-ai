@@ -135,7 +135,7 @@ class App extends Component {
           {this.state.errorLog}
         </p>
         <p className="app-footer">
-          For more information about the project, see the <a href="http://www.gustavorssilva.com/blog/react-rock-paper-scissors/" target="_blank">blog post</a>.
+          For more information about the project, see the <a href="http://gustavorssilva.github.io/blog/react-rock-paper-scissors/" target="_blank">blog post</a>.
         </p>
       </div>
     );
