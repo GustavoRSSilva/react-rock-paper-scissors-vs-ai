@@ -3,17 +3,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 import Carousel from './components/Carousel';
 
-const moves = {
-  rock: {
-    beats: 'scissors',
-  },
-  scissors: {
-    beats: 'paper',
-  },
-  paper: {
-    beats: 'rock',
-  }
-}
+const moves = ['rock', 'scissors', 'paper'];
 
 class App extends Component {
   constructor(props) {
@@ -36,7 +26,7 @@ class App extends Component {
   }
 
   validMove(target) {
-    return target && moves[target];
+    return target && moves.indexOf(target) > -1;
   }
 
   setMoves(playerOneMove, playerTwoMove = null) {
@@ -52,7 +42,7 @@ class App extends Component {
 
     //In order to not override a function parameter, we create an auxiliary variable
     let _playerTwoMove = playerTwoMove;
-    const availableMoves = Object.keys(moves);
+    const availableMoves = moves;
 
     //If player two move is null, we set it up
     if(_playerTwoMove === null) {
@@ -72,16 +62,11 @@ class App extends Component {
       return this.setState({ errorLog: 'Invalid operation!' });
     }
 
-    switch (playerOneMove) {
-      case playerTwoMove:
-        return this.setState({ result: 'It\'s a draw' });
-
-      case moves[playerTwoMove].beats:
-        return this.setState({ result: 'You lose!' });
-
-      default:
-        return this.setState({ result: 'You win!' });
+    if (playerOneMove === playerTwoMove) {
+      return this.setState({ result: 'It\'s a draw' });
     }
+
+    return ( moves[moves.indexOf(playerOneMove) + 1] || moves[0]) ===  playerTwoMove ? this.setState({ result: 'You win!' }) : this.setState({ result: 'You lose!' });
   }
 
   renderResult() {
@@ -144,13 +129,13 @@ class App extends Component {
           vs
         </p>
         <Carousel
-          options={Object.keys(moves).map((move) => (<i className={`fa fa-hand-${move}-o large`} />))}
+          options={moves.map((move) => (<i className={`fa fa-hand-${move}-o large`} />))}
         />
         <p className="App-error-log">
           {this.state.errorLog}
         </p>
         <p className="app-footer">
-          For more information about the project, see the <a href="https://gustavorsilva.github.io/blog/react-rock-paper-scissors/" target="_blank">blog post</a>.
+          For more information about the project, see the <a href="http://gustavorssilva.github.io/blog/react-rock-paper-scissors/" target="_blank">blog post</a>.
         </p>
       </div>
     );
