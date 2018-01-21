@@ -17,3 +17,12 @@ npm install
 # Start  server:
 npm run start
 ```
+
+
+
+
+
+License
+-------
+
+MIT
